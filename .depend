@@ -12,3 +12,55 @@ ckparse.cmx : \
     ckparse.cmi
 ckparse.cmi : \
     ckast.cmo
+compile.cmo : \
+    compile.cmi
+compile.cmx : \
+    compile.cmi
+compile.cmi : \
+    vmBytecode.cmi \
+    ckast.cmo
+mainCompile.cmo : \
+    vmBytecode.cmi \
+    printByteCode.cmi \
+    compile.cmi \
+    ckparse.cmi \
+    cklex.cmo
+mainCompile.cmx : \
+    vmBytecode.cmi \
+    printByteCode.cmx \
+    compile.cmx \
+    ckparse.cmx \
+    cklex.cmx
+mainRun.cmo : \
+    vmExec.cmi \
+    vmBytecode.cmi \
+    printByteCode.cmi
+mainRun.cmx : \
+    vmExec.cmx \
+    vmBytecode.cmi \
+    printByteCode.cmx
+mem.cmo : \
+    vmBytecode.cmi \
+    mem.cmi
+mem.cmx : \
+    vmBytecode.cmi \
+    mem.cmi
+mem.cmi : \
+    vmBytecode.cmi
+printByteCode.cmo : \
+    vmBytecode.cmi \
+    printByteCode.cmi
+printByteCode.cmx : \
+    vmBytecode.cmi \
+    printByteCode.cmi
+printByteCode.cmi : \
+    vmBytecode.cmi
+vmBytecode.cmi :
+vmExec.cmo : \
+    vmBytecode.cmi \
+    printByteCode.cmi \
+    vmExec.cmi
+vmExec.cmx : \
+    vmBytecode.cmi \
+    printByteCode.cmx \
+    vmExec.cmi

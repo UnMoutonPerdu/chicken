@@ -8,15 +8,15 @@ COMPFLAGS=-g
 TEST_FILES = hello.ck
 
 COMPILE_EXEC = ckc
-COMPILE_SRCS = ckast.ml 
+COMPILE_SRCS = ckast.ml printByteCode.ml compile.ml mainCompile.ml
 COMPILE_GENERATED = cklex.ml ckparse.ml ckparse.mli
-COMPILE_MLIS = 
+COMPILE_MLIS = vmBytecode.mli printByteCode.mli compile.mli
 COMPILE_OBJS = $(COMPILE_GENERATED:.ml=.cmo) $(COMPILE_SRCS:.ml=.cmo)
 
-VM_EXEC = 
-VM_SRCS = 
+VM_EXEC = ckrun
+VM_SRCS = printByteCode.ml mem.ml vmExec.ml mainRun.ml
 VM_GENERATED =
-VM_MLIS = 
+VM_MLIS = vmBytecode.mli printByteCode.mli mem.mli
 VM_OBJS = $(VM_GENERATED:.ml=.cmo) $(VM_SRCS:.ml=.cmo)
 
 # Building the world
