@@ -1,19 +1,19 @@
 {
-  type token = EOF | EOL | Chicken
+  open Ckparse ;;
 }
 
 let newline = ['\n']
 let empty = [' ']
 
-rule lex var = parse
+rule lex = parse
     | ("chicken")
-      { lex (var @ [Chicken]) lexbuf }
+      { Chicken }
     | newline
-      { lex (var @ [EOL]) lexbuf }
+      { Eol }
     | eof 
-      { var @ [EOF] }
+      { Eof }
     | empty
-      { lex var lexbuf }
+      { lex lexbuf }
 
 {
 

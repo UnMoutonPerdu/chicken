@@ -1,0 +1,14 @@
+ckast.cmo :
+ckast.cmx :
+cklex.cmo : \
+    ckparse.cmi
+cklex.cmx : \
+    ckparse.cmx
+ckparse.cmo : \
+    ckast.cmo \
+    ckparse.cmi
+ckparse.cmx : \
+    ckast.cmx \
+    ckparse.cmi
+ckparse.cmi : \
+    ckast.cmo

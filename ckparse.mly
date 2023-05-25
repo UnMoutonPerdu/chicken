@@ -2,8 +2,8 @@
 open Ckast ;;
 %}
 
-%token EOF
-%token EOL
+%token Eof
+%token Eol
 %token Chicken
 
 %start program
@@ -12,10 +12,11 @@ open Ckast ;;
 %%
 
 program:
-| EOF { [] }
+| Eof { EOL :: [] }
 | chicken program { $1 :: $2 }
 ;
 
 chicken:
-| Chicken { Vardecl $1 }
+| Chicken { CHICKEN }
+| Eol     { EOL }
 ;
