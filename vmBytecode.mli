@@ -1,18 +1,16 @@
 type vm_code = vm_instr list
 
 and vm_instr =
-  | VMI_Loadi of int
-  | VMI_Loadb of bool
-  | VMI_Loads of string
+  | VMI_Exit
+  | VMI_Load
   | VMI_Plus | VMI_Sub
-  | VMI_Mult | VMI_Div
-  | VMI_Equal
-  | VMI_Access of int
-  | VMI_Branch of (vm_code * vm_code)
+  | VMI_Mult 
+  | VMI_Compare
+  | VMI_Store
+  | VMI_Jump 
+  | VMI_Char
   | VMI_Push
-  | VMI_Swap
-  | VMI_Mkclos of vm_code
-  | VMI_Apply
+  | VMI_Chicken
 ;;
 
 type vm_val =

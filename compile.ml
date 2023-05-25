@@ -14,7 +14,17 @@ let rec chicken_to_int e counter code = match e with
 let rec int_to_code e code = match e with 
   | [] -> code
   | h :: q -> (match h with 
-                | 0 -> int_to_code q (code @ [EXIT]) 
+                | 0 -> int_to_code q (code @ [VmBytecode.VMI_Exit])
+                | 1 -> int_to_code q (code @ [VmBytecode.VMI_Chicken])
+                | 2 -> int_to_code q (code @ [VmBytecode.VMI_Plus])
+                | 3 -> int_to_code q (code @ [VmBytecode.VMI_Sub])
+                | 4 -> int_to_code q (code @ [VmBytecode.VMI_Mult])
+                | 5 -> int_to_code q (code @ [VmBytecode.VMI_Comp])
+                | 6 -> int_to_code q (code @ [VmBytecode.VMI_Load])
+                | 7 -> int_to_code q (code @ [VmBytecode.VMI_Store]) 
+                | 8 -> int_to_code q (code @ [VmBytecode.VMI_Jump])
+                | 9 -> int_to_code q (code @ [VmBytecode.VMI_Char]) 
+                | _ -> int_to_code q (code @ [VmBytecode.VMI_Push])
                 )
 (* Generate bytecode for a general expression. *)
 let rec compile_expr rho e = 
