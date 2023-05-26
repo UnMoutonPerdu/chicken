@@ -5,28 +5,17 @@ and __pp_instr ppf depth instr =
   let curr_indent = String.make (2 * depth) ' ' in
   Printf.fprintf ppf "%s" curr_indent ;
   match instr with
-  | VmBytecode.VMI_Loadi i -> Printf.fprintf ppf "Loadi %d\n%!" i
-  | VmBytecode.VMI_Loadb b -> Printf.fprintf ppf "Loadb %b\n%!" b
-  | VmBytecode.VMI_Loads s -> Printf.fprintf ppf "Loads %s\n%!" s
-  | VmBytecode.VMI_Plus -> Printf.fprintf ppf "Plus\n%!"
-  | VmBytecode.VMI_Sub -> Printf.fprintf ppf "Sub\n%!"
-  | VmBytecode.VMI_Mult -> Printf.fprintf ppf "Mult\n%!"
-  | VmBytecode.VMI_Div -> Printf.fprintf ppf "Div\n%!"
-  | VmBytecode.VMI_Equal -> Printf.fprintf ppf "Equal\n%!"
-  | VmBytecode.VMI_Access i -> Printf.fprintf ppf "Access %d\n%!" i
-  | VmBytecode.VMI_Branch (c1, c2) ->
-      Printf.fprintf ppf "Branch then\n%!" ;
-      __pp_code ppf (depth + 1) c1 ;
-      Printf.fprintf ppf "%sBranch else\n%!" curr_indent ;
-      __pp_code ppf (depth + 1) c2 ;
-      Printf.fprintf ppf "%sBranch end\n%!" curr_indent
-  | VmBytecode.VMI_Push -> Printf.fprintf ppf "Push\n%!"
-  | VmBytecode.VMI_Swap -> Printf.fprintf ppf "Swap\n%!"
-  | VmBytecode.VMI_Mkclos c ->
-      Printf.fprintf ppf "Mkclos\n%!" ;
-      __pp_code ppf (depth + 1) c ;
-      Printf.fprintf ppf "%sMkclos end\n%!" curr_indent
-  | VmBytecode.VMI_Apply -> Printf.fprintf ppf "Apply\n%!"
+  | VmBytecode.VMI_Exit -> Printf.fprintf ppf "EXIT !\n" 
+  | VmBytecode.VMI_Load -> Printf.fprintf ppf "Load !\n" 
+  | VmBytecode.VMI_Plus -> Printf.fprintf ppf "Plus !\n"
+  | VmBytecode.VMI_Sub -> Printf.fprintf ppf "Sub !\n"
+  | VmBytecode.VMI_Mult -> Printf.fprintf ppf "Mult !\n"
+  | VmBytecode.VMI_Compare -> Printf.fprintf ppf "Compare !\n"
+  | VmBytecode.VMI_Store -> Printf.fprintf ppf "Store !\n"
+  | VmBytecode.VMI_Jump -> Printf.fprintf ppf "Jump !\n"
+  | VmBytecode.VMI_Char -> Printf.fprintf ppf "Char !\n"
+  | VmBytecode.VMI_Chicken -> Printf.fprintf ppf "Chicken !\n"
+  | VmBytecode.VMI_Push n -> Printf.fprintf ppf "Push %d!\n" n
 ;;
 
 
@@ -41,7 +30,7 @@ let rec pp_separated_list ppf printer = function
 
 (* Print a virtual machine value. *)
 let rec pp_value ppf = function
-  | VmBytecode.VMV_int i -> Printf.fprintf ppf "%d" i
+  (* | VmBytecode.VMV_int i -> Printf.fprintf ppf "%d" i
   | VmBytecode.VMV_bool b -> Printf.fprintf ppf "%b" b
   | VmBytecode.VMV_string s -> Printf.fprintf ppf "%s" s
   | VmBytecode.VMV_closure (_body, _env) ->
@@ -55,7 +44,8 @@ let rec pp_value ppf = function
       Printf.fprintf ppf "<env> = [" ;
       pp_separated_list ppf pp_value vals ;
       Printf.fprintf ppf "]"
-  | VmBytecode.VMV_code_addr _ -> Printf.fprintf ppf "<code>"
+  | VmBytecode.VMV_code_addr _ -> Printf.fprintf ppf "<code>" *)
+  | _ -> ()
 ;;
 
 

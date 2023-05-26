@@ -24,10 +24,10 @@ let rec int_to_code e code = match e with
                 | 7 -> int_to_code q (code @ [VmBytecode.VMI_Store]) 
                 | 8 -> int_to_code q (code @ [VmBytecode.VMI_Jump])
                 | 9 -> int_to_code q (code @ [VmBytecode.VMI_Char]) 
-                | _ -> int_to_code q (code @ [VmBytecode.VMI_Push])
+                | n -> int_to_code q (code @ [VmBytecode.VMI_Push (n - 10)])
                 )
 (* Generate bytecode for a general expression. *)
 let rec compile_expr rho e = 
   let ecode = chicken_to_int e 0 [] in 
-    match ecode with 
+    int_to_code ecode []
 ;;

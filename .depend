@@ -13,8 +13,12 @@ ckparse.cmx : \
 ckparse.cmi : \
     ckast.cmo
 compile.cmo : \
+    vmBytecode.cmi \
+    ckast.cmo \
     compile.cmi
 compile.cmx : \
+    vmBytecode.cmi \
+    ckast.cmx \
     compile.cmi
 compile.cmi : \
     vmBytecode.cmi \
@@ -39,14 +43,6 @@ mainRun.cmx : \
     vmExec.cmx \
     vmBytecode.cmi \
     printByteCode.cmx
-mem.cmo : \
-    vmBytecode.cmi \
-    mem.cmi
-mem.cmx : \
-    vmBytecode.cmi \
-    mem.cmi
-mem.cmi : \
-    vmBytecode.cmi
 printByteCode.cmo : \
     vmBytecode.cmi \
     printByteCode.cmi

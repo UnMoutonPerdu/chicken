@@ -14,9 +14,9 @@ COMPILE_MLIS = vmBytecode.mli printByteCode.mli compile.mli
 COMPILE_OBJS = $(COMPILE_GENERATED:.ml=.cmo) $(COMPILE_SRCS:.ml=.cmo)
 
 VM_EXEC = ckrun
-VM_SRCS = printByteCode.ml mem.ml vmExec.ml mainRun.ml
+VM_SRCS = printByteCode.ml vmExec.ml mainRun.ml
 VM_GENERATED =
-VM_MLIS = vmBytecode.mli printByteCode.mli mem.mli
+VM_MLIS = vmBytecode.mli printByteCode.mli
 VM_OBJS = $(VM_GENERATED:.ml=.cmo) $(VM_SRCS:.ml=.cmo)
 
 # Building the world
@@ -84,11 +84,11 @@ tarball-enonce:
 	tar cvzhf tarball-enonce.tgz \
 		std.pdf $(TEST_FILES) Makefile printByteCode.ml printByteCode.mli ckast.ml \
 		cklex.mll ckparse.mly mainCompile.ml vmBytecode.mli \
-		compile.mli mainRun.ml vmExec.ml mem.ml mem.mli compile-eleves.ml *.ck
+		compile.mli mainRun.ml vmExec.ml compile-eleves.ml *.ck
 
 tarball-solution:
 	rm -f tarball-solution.tgz
 	tar cvzhf tarball-solution.tgz \
 		ctd.pdf $(TEST_FILES) Makefile printByteCode.ml printByteCode.mli ckast.ml \
 		cklex.mll ckparse.mly mainCompile.ml vmBytecode.mli \
-		compile.mli mainRun.ml vmExec.ml mem.ml mem.mli compile.ml *.ck
+		compile.mli mainRun.ml vmExec.ml compile.ml *.ck
