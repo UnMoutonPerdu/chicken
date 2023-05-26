@@ -21,14 +21,14 @@ let rec get_first list index = match list with
   | [] -> raise Computation_failure
 
 let rec in_load (stack : VmBytecode.vw_stack) index (new_stack : VmBytecode.vw_stack) = match index with 
-  | 0 -> (get_first stack 0) :: (new_stack @ stack)
+  | 1 -> (get_first stack 0) :: (new_stack @ stack)
   | n -> match stack with 
           | [] -> raise Computation_failure
           | h :: q -> in_load q (n-1) (h :: new_stack)
 ;;
 
 let rec in_store (stack : VmBytecode.vw_stack) value index (new_stack : VmBytecode.vw_stack) = match index with 
-  | 0 -> new_stack @ ((VmBytecode.VMV_int value) :: stack)
+  | 1 -> new_stack @ ((VmBytecode.VMV_int value) :: stack)
   | n -> match stack with 
           | [] -> raise Computation_failure
           | h :: q -> in_store q value (n-1) (h :: new_stack)
@@ -61,6 +61,11 @@ let next_state state =
         { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
           VmBytecode.code = c ;
           VmBytecode.stack = (VmBytecode.VMV_int (j+i)) :: s }
+  | (_, ((VmBytecode.VMI_Plus) :: c), (VmBytecode.VMV_chicken str1) :: (VmBytecode.VMV_chicken str2) :: s) ->
+    (* Int constant. *)
+        { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
+          VmBytecode.code = c ;
+          VmBytecode.stack = (VmBytecode.VMV_chicken (str1 ^ str2)) :: s }        
   | (_, ((VmBytecode.VMI_Plus) :: c), _ :: (VmBytecode.VMV_chicken str) :: s) ->
     (* Int constant. *)
         raise Computation_failure 
@@ -162,10 +167,13 @@ let next_state state =
       (* Int constant. *) 
           { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
             VmBytecode.code = c ;
-            VmBytecode.stack = (VmBytecode.VMV_chicken (Char.escaped (Char.chr num))) :: (VmBytecode.VMV_int num) :: s } 
+            VmBytecode.stack = (VmBytecode.VMV_chicken (Char.escaped (Char.chr num))) :: s } 
     | (_, ((VmBytecode.VMI_Push n) :: c), s) ->
       (* Int constant. *) 
           { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
             VmBytecode.code = c ;
             VmBytecode.stack = (VmBytecode.VMV_int n) :: s } 
+    | (r, [(* Return *)], s) ->
+        (* No more code to execute : the end. *)
+        raise (Computation_success (get_first s 0))
 ;;

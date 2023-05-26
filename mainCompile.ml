@@ -1,4 +1,4 @@
-let version = "0.01" ;;
+let version = "chicken" ;;
 
 let usage () =
   let _ =
@@ -28,7 +28,7 @@ let main () =
   let out_channel = open_out_bin "a.out" in
   let compiled_sentences = ref ([] : VmBytecode.vm_code list) in
   let lexbuf = Lexing.from_channel input_channel in
-  let _ = Printf.printf "        Welcome to CHICKEN, version %s\n%!" version in
+  let _ = Printf.printf "        Chicken Chicken Chicken, Chicken %s\n%!" version in
   let comp_done = ref 0 in
   while !comp_done = 0 do
     comp_done := 1;
@@ -45,7 +45,7 @@ let main () =
           (fun accu code -> code @ accu) [] !compiled_sentences in
       output_value out_channel whole_code ;
       close_out out_channel ;
-      Printf.printf  "Bye.\n%!" ; exit 0
+      Printf.printf  "Chicken.\n%!" ; exit 0
     with
     | Compile.Compilation_not_implemented ->
         (* Ok, right, job is done. We still just need to write the bycode
@@ -56,7 +56,7 @@ let main () =
             (fun accu code -> code @ accu) [] !compiled_sentences in
         output_value out_channel whole_code ;
         close_out out_channel ;
-        Printf.printf  "Bye.\n%!" ; exit 0
+        Printf.printf  "Chicken.\n%!" ; exit 0
     | Failure msg -> Printf.printf "Error: %s\n\n" msg
     | Compile.Unbound_identifier id ->
         Printf.printf "Unbound identifier %s.@." id

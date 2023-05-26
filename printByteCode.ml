@@ -30,22 +30,8 @@ let rec pp_separated_list ppf printer = function
 
 (* Print a virtual machine value. *)
 let rec pp_value ppf = function
-  (* | VmBytecode.VMV_int i -> Printf.fprintf ppf "%d" i
-  | VmBytecode.VMV_bool b -> Printf.fprintf ppf "%b" b
-  | VmBytecode.VMV_string s -> Printf.fprintf ppf "%s" s
-  | VmBytecode.VMV_closure (_body, _env) ->
-      Printf.fprintf ppf "<fun>"
-      (* Otherwise, for full print, cumbersome...
-      Printf.fprintf ppf "<fun (" ;
-      pp_separated_list ppf (fun _ppf -> (__pp_instr _ppf 0)) body ;
-      Printf.fprintf ppf ", %a)>" pp_value env
-       *)
-  | VmBytecode.VMV_env vals ->
-      Printf.fprintf ppf "<env> = [" ;
-      pp_separated_list ppf pp_value vals ;
-      Printf.fprintf ppf "]"
-  | VmBytecode.VMV_code_addr _ -> Printf.fprintf ppf "<code>" *)
-  | _ -> ()
+  | VmBytecode.VMV_int i -> Printf.fprintf ppf "%d" i
+  | VmBytecode.VMV_chicken s -> Printf.fprintf ppf "%s" s
 ;;
 
 

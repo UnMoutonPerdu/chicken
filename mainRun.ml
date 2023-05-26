@@ -25,14 +25,15 @@ let load_run_and_quit fname =
     state := VmExec.next_state !state ;
     if !trace_flag then
       Printf.printf "After step %d WM state is:\n%a\n%!"
-        !step_count VmExec.pp_state !state
+        !step_count VmExec.pp_state !state;
+      if !step_count = 35 then trace_flag := false;
   done
   with
   | VmExec.Computation_success v ->
-      Printf.printf "Computation success: %a\n%!" PrintByteCode.pp_value v ;
+      Printf.printf "Chicken success: %a\n%!" PrintByteCode.pp_value v ;
       exit 0
   | VmExec.Computation_failure ->
-      Printf.printf "Computation failure\n%!" ;
+      Printf.printf "Chicken failure\n%!" ;
       exit (-1)
 ;;
 
