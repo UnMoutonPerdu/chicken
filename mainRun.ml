@@ -4,8 +4,6 @@
 let trace_flag = ref false ;;
 let step_count = ref 0 ;;
 
-let initial_env = VmBytecode.VMV_env [] ;;
-
 
 let load_run_and_quit fname =
   let in_handle = open_in_bin fname in
@@ -17,7 +15,7 @@ let load_run_and_quit fname =
         exit (-2)) in
   (* Initial state. *)
   let state = ref {
-    VmBytecode.register = initial_env ;
+    VmBytecode.register = VmBytecode.VMV_chicken "chicken" ;
     VmBytecode.code = prog ;
     VmBytecode.stack = [] } in
   if !trace_flag then

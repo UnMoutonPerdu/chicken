@@ -1,5 +1,7 @@
 {
   open Ckparse ;;
+  exception Eoi ;;
+  exception LexError of (Lexing.position * Lexing.position) ;;
 }
 
 let newline = ['\n']
@@ -14,6 +16,8 @@ rule lex = parse
       { Eof }
     | empty
       { lex lexbuf }
+    | _     { raise (LexError (lexbuf.Lexing.lex_start_p,
+                             lexbuf.Lexing.lex_curr_p)) }
 
 {
 

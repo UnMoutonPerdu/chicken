@@ -19,7 +19,7 @@ let rec int_to_code e code = match e with
                 | 2 -> int_to_code q (code @ [VmBytecode.VMI_Plus])
                 | 3 -> int_to_code q (code @ [VmBytecode.VMI_Sub])
                 | 4 -> int_to_code q (code @ [VmBytecode.VMI_Mult])
-                | 5 -> int_to_code q (code @ [VmBytecode.VMI_Comp])
+                | 5 -> int_to_code q (code @ [VmBytecode.VMI_Compare])
                 | 6 -> int_to_code q (code @ [VmBytecode.VMI_Load])
                 | 7 -> int_to_code q (code @ [VmBytecode.VMI_Store]) 
                 | 8 -> int_to_code q (code @ [VmBytecode.VMI_Jump])
@@ -27,7 +27,7 @@ let rec int_to_code e code = match e with
                 | n -> int_to_code q (code @ [VmBytecode.VMI_Push (n - 10)])
                 )
 (* Generate bytecode for a general expression. *)
-let rec compile_expr rho e = 
+let rec compile_expr (rho : string list) e = 
   let ecode = chicken_to_int e 0 [] in 
     int_to_code ecode []
 ;;
