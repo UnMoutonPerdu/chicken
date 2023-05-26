@@ -10,7 +10,7 @@ let load_run_and_quit fname =
   (* Get the bytecode of the program. *)
   let (prog : VmBytecode.vm_code) =
     (try input_value in_handle with
-    | Failure "input_value: bad object" ->
+    | Failure _ ->
         Printf.printf "Error: bad bytecode format.\n%!" ;
         exit (-2)) in
   (* Initial state. *)

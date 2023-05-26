@@ -60,16 +60,16 @@ let next_state state =
     (* Int constant. *)
         { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
           VmBytecode.code = c ;
-          VmBytecode.stack = (VmBytecode.VMV_int (j+i)) :: s }
+          VmBytecode.stack = (VmBytecode.VMV_int (i+j)) :: s }
   | (_, ((VmBytecode.VMI_Plus) :: c), (VmBytecode.VMV_chicken str1) :: (VmBytecode.VMV_chicken str2) :: s) ->
     (* Int constant. *)
         { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
           VmBytecode.code = c ;
           VmBytecode.stack = (VmBytecode.VMV_chicken (str1 ^ str2)) :: s }        
-  | (_, ((VmBytecode.VMI_Plus) :: c), _ :: (VmBytecode.VMV_chicken str) :: s) ->
+  | (_, ((VmBytecode.VMI_Plus) :: c), (VmBytecode.VMV_int i) :: (VmBytecode.VMV_chicken str) :: s) ->
     (* Int constant. *)
         raise Computation_failure 
-  | (_, ((VmBytecode.VMI_Plus) :: c), (VmBytecode.VMV_chicken str) :: _ :: s) ->
+  | (_, ((VmBytecode.VMI_Plus) :: c), (VmBytecode.VMV_chicken str) :: (VmBytecode.VMV_int i) :: s) ->
     (* Int constant. *)
         raise Computation_failure     
   | (_, ((VmBytecode.VMI_Plus) :: c), _ :: []) ->
@@ -82,11 +82,14 @@ let next_state state =
     (* Int constant. *)
         { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
           VmBytecode.code = c ;
-          VmBytecode.stack = (VmBytecode.VMV_int (j-i)) :: s }   
-  | (_, ((VmBytecode.VMI_Sub) :: c), _ :: (VmBytecode.VMV_chicken str) :: s) ->
+          VmBytecode.stack = (VmBytecode.VMV_int (i-j)) :: s }
+  | (_, ((VmBytecode.VMI_Sub) :: c), (VmBytecode.VMV_chicken str1) :: (VmBytecode.VMV_chicken str2) :: s) ->
+    (* Int constant. *)
+        raise Computation_failure    
+  | (_, ((VmBytecode.VMI_Sub) :: c), (VmBytecode.VMV_int i) :: (VmBytecode.VMV_chicken str) :: s) ->
     (* Int constant. *)
         raise Computation_failure 
-  | (_, ((VmBytecode.VMI_Sub) :: c), (VmBytecode.VMV_chicken str) :: _ :: s) ->
+  | (_, ((VmBytecode.VMI_Sub) :: c), (VmBytecode.VMV_chicken str) :: (VmBytecode.VMV_int i) :: s) ->
     (* Int constant. *)
         raise Computation_failure     
   | (_, ((VmBytecode.VMI_Sub) :: c), _ :: []) ->
@@ -99,11 +102,14 @@ let next_state state =
     (* Int constant. *)
         { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
           VmBytecode.code = c ;
-          VmBytecode.stack = (VmBytecode.VMV_int (j*i)) :: s }    
-  | (_, ((VmBytecode.VMI_Mult) :: c), _ :: (VmBytecode.VMV_chicken str) :: s) ->
+          VmBytecode.stack = (VmBytecode.VMV_int (i*j)) :: s }
+  | (_, ((VmBytecode.VMI_Mult) :: c), (VmBytecode.VMV_chicken str1) :: (VmBytecode.VMV_chicken str2) :: s) ->
+    (* Int constant. *)
+        raise Computation_failure       
+  | (_, ((VmBytecode.VMI_Mult) :: c), (VmBytecode.VMV_int i) :: (VmBytecode.VMV_chicken str) :: s) ->
     (* Int constant. *)
         raise Computation_failure 
-  | (_, ((VmBytecode.VMI_Mult) :: c), (VmBytecode.VMV_chicken str) :: _ :: s) ->
+  | (_, ((VmBytecode.VMI_Mult) :: c), (VmBytecode.VMV_chicken str) :: (VmBytecode.VMV_int i) :: s) ->
     (* Int constant. *)
         raise Computation_failure     
   | (_, ((VmBytecode.VMI_Mult) :: c), _ :: []) ->
@@ -118,10 +124,16 @@ let next_state state =
         { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
           VmBytecode.code = c ;
           VmBytecode.stack = (VmBytecode.VMV_int value) :: s }
-  | (_, ((VmBytecode.VMI_Compare) :: c), _ :: (VmBytecode.VMV_chicken str) :: s) ->
+  | (_, ((VmBytecode.VMI_Compare) :: c), (VmBytecode.VMV_chicken str1) :: (VmBytecode.VMV_chicken str2) :: s) ->
+    (* Int constant. *)
+      let value = if str1 = str2 then 1 else 0 in
+        { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
+          VmBytecode.code = c ;
+          VmBytecode.stack = (VmBytecode.VMV_int value) :: s }
+  | (_, ((VmBytecode.VMI_Compare) :: c), (VmBytecode.VMV_int i) :: (VmBytecode.VMV_chicken str) :: s) ->
     (* Int constant. *)
         raise Computation_failure 
-  | (_, ((VmBytecode.VMI_Compare) :: c), (VmBytecode.VMV_chicken str) :: _ :: s) ->
+  | (_, ((VmBytecode.VMI_Compare) :: c), (VmBytecode.VMV_chicken str) :: (VmBytecode.VMV_int i) :: s) ->
     (* Int constant. *)
         raise Computation_failure     
   | (_, ((VmBytecode.VMI_Compare) :: c), _ :: []) ->
@@ -135,7 +147,16 @@ let next_state state =
       let new_stack = in_load ((VmBytecode.VMV_int indx) :: s) indx [] in  
         { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
           VmBytecode.code = c ;
-          VmBytecode.stack = new_stack }    
+          VmBytecode.stack = new_stack }  
+  | (_, ((VmBytecode.VMI_Load) :: []), _) ->
+    (* Int constant. *)
+      raise Computation_failure
+  | (_, ((VmBytecode.VMI_Load) :: _), (VmBytecode.VMV_chicken str) :: s) ->
+    (* Int constant. *)
+      raise Computation_failure
+  | (_, ((VmBytecode.VMI_Load) :: _), []) ->
+    (* Int constant. *)
+      raise Computation_failure
   | (_, ((VmBytecode.VMI_Store) :: instr :: c), (VmBytecode.VMV_int indx) :: s) ->
     (* Int constant. *)
       let value = match instr with 
@@ -154,6 +175,12 @@ let next_state state =
         { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
           VmBytecode.code = c ;
           VmBytecode.stack = new_stack } 
+    | (_, ((VmBytecode.VMI_Store) :: []), _) ->
+      raise Computation_failure
+    | (_, ((VmBytecode.VMI_Store) :: _), (VmBytecode.VMV_chicken str) :: s) ->
+      raise Computation_failure
+    | (_, ((VmBytecode.VMI_Store) :: _), []) ->
+      raise Computation_failure
     | (_, ((VmBytecode.VMI_Jump) :: c), (VmBytecode.VMV_int nb_jump) :: (VmBytecode.VMV_int condition) :: s) ->
       (* Int constant. *)
         let new_code = match condition with 
@@ -162,12 +189,24 @@ let next_state state =
             in
           { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
             VmBytecode.code = new_code ;
-            VmBytecode.stack = (VmBytecode.VMV_int nb_jump) :: (VmBytecode.VMV_int condition) :: s }    
+            VmBytecode.stack = (VmBytecode.VMV_int nb_jump) :: (VmBytecode.VMV_int condition) :: s }  
+    | (_, ((VmBytecode.VMI_Jump) :: c), (VmBytecode.VMV_chicken str) :: _) ->
+      raise Computation_failure 
+    | (_, ((VmBytecode.VMI_Jump) :: c), (VmBytecode.VMV_int i) :: []) ->
+      raise Computation_failure  
+    | (_, ((VmBytecode.VMI_Jump) :: c), (VmBytecode.VMV_int i) :: (VmBytecode.VMV_chicken str) :: _) ->
+      raise Computation_failure  
+    | (_, ((VmBytecode.VMI_Jump) :: c), []) ->
+      raise Computation_failure  
     | (_, ((VmBytecode.VMI_Char) :: c), (VmBytecode.VMV_int num) :: s) ->
       (* Int constant. *) 
           { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
             VmBytecode.code = c ;
             VmBytecode.stack = (VmBytecode.VMV_chicken (Char.escaped (Char.chr num))) :: s } 
+    | (_, ((VmBytecode.VMI_Char) :: c), (VmBytecode.VMV_chicken str) :: s) ->
+      raise Computation_failure
+    | (_, ((VmBytecode.VMI_Char) :: c), []) ->
+      raise Computation_failure
     | (_, ((VmBytecode.VMI_Push n) :: c), s) ->
       (* Int constant. *) 
           { VmBytecode.register = VmBytecode.VMV_chicken "chicken";
